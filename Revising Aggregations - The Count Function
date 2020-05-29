@@ -1,0 +1,5 @@
+select count(*)
+from city a
+where 100000 <= ALL (select population
+                    from city b
+                    where  b.id = a.id)
