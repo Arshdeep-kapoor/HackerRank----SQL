@@ -1,0 +1,11 @@
+select
+distinct employee.company_code, Company.founder
+, count(distinct lead_manager_code)
+, count(distinct senior_manager_code)
+, count(distinct manager_code)
+, count(distinct employee_code)
+from employee
+join Company
+on Company.company_code = employee.company_code
+group by 1,2
+order by 1
