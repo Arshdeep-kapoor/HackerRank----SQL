@@ -1,0 +1,24 @@
+select hackers.hacker_id, name, count(challenge_id) as challenges_created
+from hackers JOIN Challenges
+on hackers.hacker_id = Challenges.hacker_id
+group by 1,2
+having challenges_created = 
+        /* the max count that anyone has */
+        (SELECT MAX(temp1.cnt)
+        from (SELECT COUNT(hacker_id) as cnt
+             from Challenges
+             group by hacker_id
+             order by hacker_id) temp1)
+
+    /* or anyone who's count is in... */
+    or challenges_created in 
+        /* the set of counts... */
+        (select t.cnt
+         from (select count(*) as cnt 
+               from challenges
+               group by hacker_id) t
+         /* who's group of counts... */
+         group by t.cnt
+         /* has only one element */
+         having count(t.cnt) = 1)
+order by 3 desc, 1
