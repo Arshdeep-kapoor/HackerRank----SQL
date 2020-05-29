@@ -1,0 +1,13 @@
+select name from
+(select s1.name,s4.salary-s3.salary
+from Students s1
+join Friends
+on s1.id = Friends.id
+join students s2
+on friends.friend_id = s2.id
+join packages s3
+on s3.id = s1.id
+join packages s4
+on s4.id = friends.friend_id
+where s4.salary > s3.salary
+order by s4.salary) as ss;
